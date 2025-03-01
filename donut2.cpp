@@ -22,10 +22,9 @@ int main()
 int i=0;
 int gd=DETECT,gm;
 initgraph(&gd,&gm,"kynm donut");
-setbkcolor(WHITE);
+//setbkcolor(WHITE);
 cleardevice();
 while(i<100000){
-readimagefile("im.jpg",0,0,100,100);
 cleardevice();
 rot(300,220,50,125,i);
 i+=10;
