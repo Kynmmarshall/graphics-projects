@@ -30,7 +30,7 @@ rot(300,220,50,125,i);
 i+=10;
 delay(20);
 }
-getch();
+//getch();
 closegraph();
 return 0;
 }
