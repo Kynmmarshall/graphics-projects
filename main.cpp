@@ -9,7 +9,6 @@
 
 struct Bomb {
    int x, y;
-   float angle;
    bool active;
 };
 struct terr {
@@ -24,13 +23,25 @@ int array[25];
 int arrx[25];
 int arry[25];
 char text[20];
-Bomb bombs[6];
-terr terra[40];
-void cloud(){
-   int xc=1700;
-   int yc=(rand()%10)*10;
+Bomb bombs[17];
+bool control=true;
+int xc=200;
+int yc=20+(rand()%3)*50;
+int xc2=900;
+int yc2=20+(rand()%3)*50;
+int xc3=1200;
+int yc3=20+(rand()%3)*50;
+int xc4=400;
+int yc4=20+(rand()%3)*50;
+int xc5=1000;
+int yc5=20+(rand()%3)*50;
+int xc6=700;
+int yc6=20+(rand()%3)*50;
+
+void cloud(int &xc, int &yc){
+   
    int cloudX[6] = {xc, xc + 20, xc + 40, xc + 60, xc + 30, xc + 10};
-   int cloudY[6] = {y, y - 10, y, y - 10, y + 10, y + 10};
+   int cloudY[6] = {yc, yc - 10, yc, yc - 10, yc + 10, yc + 10};
    int size = sizeof(cloudX) / sizeof(cloudX[0]);
 
    setcolor(WHITE);
@@ -40,6 +51,13 @@ void cloud(){
        fillellipse(cloudX[i], cloudY[i], 20, 15);
        i++;
    }
+  if(xc<=-90){
+   xc=1300;
+   yc=(rand()%3)*50;
+  }
+  else{
+   xc-=2;
+  }
 }
 void stars(int centerX, int centerY, int size,int angle){
       float rad=(float)angle*(M_PI / 180);
@@ -75,9 +93,15 @@ void stars(int centerX, int centerY, int size,int angle){
            i++; 
          }
          line(arra[7],arrar[7],arra[0],arrar[0]);
-          //delay(20); 
-          angle += 10;
       }
+void controls(){
+   setcolor(YELLOW);
+   settextstyle(SMALL_FONT,0,10);
+   rectangle(400,200,900,600);
+  ellipse(650,55,0,360,400,50);
+  settextstyle(GOTHIC_FONT,0,60);
+  outtextxy(315,34,"CONTROLS");
+}  
 void menu(int i){
   setcolor(YELLOW);
   rectangle(400,200,900,600);
@@ -104,11 +128,11 @@ void menu(int i){
   setfillstyle(HATCH_FILL,LIGHTMAGENTA);
   floodfill(318,34,YELLOW);
   rectangle(550,300,750,360);
-  rectangle(480,400,800,480);
+  //rectangle(480,400,800,480);
   rectangle(550,500,760,560);
   settextstyle(SMALL_FONT,0,10);
   outtextxy(560,310,"START");
-  outtextxy(490,420,"HIGH SCORE");
+  //outtextxy(490,420,"CONTROLS");
   outtextxy(600,510,"EXIT");
   floodfill(430,210,YELLOW);
   setfillstyle(SOLID_FILL,BLUE);
@@ -130,8 +154,7 @@ void triangle(int x1,int y1,int x2,int y2,int x3,int y3){
 }
 void player(){
    
-      int speed=15;
-   
+      int speed=15;  
    setcolor(YELLOW);
         circle(x2+2,y+7,3);
         circle(x2+2,y+21,3);
@@ -172,15 +195,11 @@ void player(){
 
 }
 void bombb(Bomb &b,int ran){
+   setcolor(RED);
    if (!b.active) return;
-    float rad = b.angle * M_PI / 180.0;
-    int dx = cos(rad); 
-    int dy = sin(rad);
-
-    int px = b.x + dx;
-    int py = b.y + dy;
-
-    setcolor(RED);
+   
+    int px = b.x;
+    int py = b.y; 
     circle(px, py, 15);
     if(ran<9){
     setfillstyle(SOLID_FILL, RED);
@@ -191,7 +210,6 @@ void bombb(Bomb &b,int ran){
     floodfill(px, py, RED);
    }
     b.x -= 10;
-    b.angle += 10;
     if (b.x < 0) {
         b.active = false;
         score++;
@@ -200,6 +218,8 @@ void bombb(Bomb &b,int ran){
 }  
 void terrain() {
    int i=1;
+   setcolor(GREEN);
+   setlinestyle(CENTER_LINE, 0,200);
    static bool initialized = false;
    if (!initialized) {
        while(i < 24) {
@@ -226,7 +246,7 @@ void terrain() {
        arrx[i] -= 5;
        i++;
    }
-   setcolor(GREEN);
+   
    if(arrax[24]<=0){
       i=1;   
       while(i < 24) {
@@ -252,7 +272,6 @@ void terrain() {
      }
      
    i=0;
-   setlinestyle(CENTER_LINE, 0,200);
    while(i < 24) {
        line(arrax[i], array[i], arrax[i + 1], array[i + 1]);
        line(arrx[i], arry[i], arrx[i + 1], arry[i + 1]);
@@ -298,7 +317,7 @@ void pauses(){
 settextstyle(SANS_SERIF_FONT,0,60);
 outtextxy(580, 350,"PAUSE");
 }
-
+int c=0;
 int main()
 {
 srand(time(0));
@@ -307,12 +326,12 @@ POINT cursorpos;
 bool play=false,men=true;
 initwindow(1920,640,"kynm windows");
   bool spawnbomb=true;
-int random_number=1000,ran=5;
+int random_number=1000,ran=15;
 while(men==true){
    cleardevice();
    menu(j); 
    GetCursorPos(&cursorpos);
-    j+=3;
+    j+=10;
     setfillstyle(SOLID_FILL,RED);
     if(550<=cursorpos.x && cursorpos.x<=750 && 328<=cursorpos.y && cursorpos.y<=388){
      floodfill(553,305,YELLOW);
@@ -321,22 +340,33 @@ while(men==true){
         break;
      }
     }
-    else if(480<=cursorpos.x && cursorpos.x<=800 && 400<=cursorpos.y && cursorpos.y<=480){
+    /*else if(480<=cursorpos.x && cursorpos.x<=800 && 400<=cursorpos.y && cursorpos.y<=480){
       floodfill(483,405,YELLOW);
-      if(ismouseclick(WM_LBUTTONDOWN)){
-      
+      if(ismouseclick(WM_BUTTONDOWN)){
+        // cleardevice();
+        // while(control){
+            //controls();
+           // if(GetAsyncKeyState(VK_ESCAPE)){
+            //   men=true;
+            //   control=false;
+           // }
+         //}
       }
-     }
+     }*/
      else if(550<=cursorpos.x && cursorpos.x<=760 && 500<=cursorpos.y && cursorpos.y<=560){
       floodfill(553,505,YELLOW);
       if(ismouseclick(WM_LBUTTONDOWN)){
          break;
       }
      }
- delay(50);
+ delay(100);
    
 }
+if(c==0){
 cleardevice();
+c=1;
+}
+
 while(play==true){
    if(GetAsyncKeyState('P')){
       pause=true;
@@ -353,36 +383,41 @@ while(play==true){
       
       }
    }
-   cloud();
    setbkcolor(LIGHTBLUE);
    player();
-   if (spawnbomb) {
-      ran = (rand() % 15) + 2;  
+   cloud(xc,yc);
+   cloud(xc2,yc2);
+   cloud(xc3,yc3);
+   cloud(xc4,yc4);
+   cloud(xc5,yc5);
+   cloud(xc6,yc6);
+
+   if (spawnbomb) {  
+      ran = (rand() % 15) + 2;
     while(i < ran) {
-         bombs[i].x = (rand() % (2000)) + 1900;
+         bombs[i].x = (rand() % (1500)) + 1400;
          bombs[i].y = (rand() % (450 - 50)) + 25;
-         bombs[i].angle = rand() % 360;
         bombs[i].active = true;
-        i++; 
+        i++;  
     } 
     i=0;
       spawnbomb =false;
   }     
   terrain();
-  setlinestyle(SOLID_LINE, 0,1);
-     bool allInactive = true;
-        while(i < ran) {
-            if (bombs[i].active) {
-                bombb(bombs[i],ran);
-                allInactive = false;
-            }
-            if(bombs[i].active==true){
-               score;
-              }
-            i++;
-        } 
-        i=0;
-        if (allInactive) spawnbomb = true;
+  setlinestyle(SOLID_LINE, 0,1);   
+  bool allInactive = true;
+  while(i < ran) {
+  if (bombs[i].active) {
+   bombb(bombs[i],ran);
+   allInactive = false;
+}
+
+i++;
+} 
+i=0;
+if (allInactive){ 
+   spawnbomb = true;
+}
         
 sprintf(text, "score: %d",score);
    settextstyle(SMALL_FONT,0,10);
@@ -401,6 +436,8 @@ cleardevice();
 setbkcolor(BLACK);
 settextstyle(SANS_SERIF_FONT, 0,40);
 outtextxy(460, 300,"GAME  OVER");
+setcolor(RED);
+outtextxy(550,350, text);
 delay(10000);
 getch();
 closegraph();
