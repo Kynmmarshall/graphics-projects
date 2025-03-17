@@ -107,7 +107,7 @@ void menu(int i){
   rectangle(400,200,900,600);
   ellipse(650,55,0,360,400,50);
   settextstyle(GOTHIC_FONT,0,60);
-  outtextxy(315,34,"WELCOME TO KYNM 1.0");
+  outtextxy(315,34,"WELCOME TO KYNM 1.1");
   setfillstyle(SOLID_FILL,YELLOW);
   stars(50,100,20,i);
   floodfill(50,100,YELLOW);
@@ -451,7 +451,7 @@ if(GetAsyncKeyState(VK_RETURN)){
       outtextxy(20, 50,"RESTART (press R)");
       rectangle(20,50,198,75);
       if(GetAsyncKeyState('R')){
-     x = 30; y = 420; x2 = 80; y2 = 450;
+     x = 50; y = 430; x2 = 100; y2 = 460;
      i=0;
      while(i<ran){
      bombs[i].active = false;
@@ -460,9 +460,10 @@ if(GetAsyncKeyState(VK_RETURN)){
       cleardevice();
       break;
       }
+      delay(100);
    }
 }
-   swapbuffers();
+ swapbuffers();
   delay(20);
   cleardevice();
 }
