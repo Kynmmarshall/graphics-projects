@@ -16,6 +16,7 @@ struct terr {
    bool active;
 };
 int x = 30, y = 300, x2 = 80, y2 = 330;
+int xx = 30, yy = 210, xx2 = 80, yy2 = 240;
 bool pause=false; 
 int score=0;
 int arrax[25];
@@ -128,11 +129,11 @@ void menu(int i){
   setfillstyle(HATCH_FILL,LIGHTMAGENTA);
   floodfill(318,34,YELLOW);
   rectangle(550,300,750,360);
-  //rectangle(480,400,800,480);
+  rectangle(550,400,760,460);
   rectangle(550,500,760,560);
   settextstyle(SMALL_FONT,0,10);
-  outtextxy(560,310,"START");
-  //outtextxy(490,420,"CONTROLS");
+  outtextxy(560,310,"1 player");
+  outtextxy(551,410,"2 players");
   outtextxy(600,510,"EXIT");
   floodfill(430,210,YELLOW);
   setfillstyle(SOLID_FILL,BLUE);
@@ -192,6 +193,48 @@ void player(){
     if (x2 > 1000) { x =1000 - 50; x2 =1000; }
     if (y < 0) { y = 0; y2 = 30; }
     if (y2 >450) { y = 450 - 30; y2 = 450; }
+
+}
+void player2(){
+   
+   int speed=15;  
+setcolor(BLUE);
+     circle(xx2+2,yy+7,3);
+     circle(xx2+2,yy+21,3);
+     line(xx, yy+15, xx-20, yy+40);  
+     line(xx + 30, yy, xx, yy - 50);   
+     line(xx, yy - 50, xx2, yy);           
+     line(xx2 - 20, yy2, xx, yy2 + 50); 
+     line(xx, yy2 + 50, xx2, yy2);
+     line(xx, yy, xx-20, yy-10);           
+     line(xx, yy+15, xx -20, yy - 10); 
+     line(xx, yy2, xx - 20, yy + 40); 
+     arc(xx2, yy2 - 15, 270, 90, 15);
+     line(xx, yy, xx+30, yy);
+     line(xx, yy2, xx+30, yy2);
+setfillstyle(1,BLUE);
+floodfill((xx+xx2)/2,(yy+yy2)/2,BLUE);
+if(GetAsyncKeyState(VK_UP)){
+   yy-=speed;
+   yy2-=speed;
+}
+if(GetAsyncKeyState(VK_LEFT)){
+   xx-=speed;
+   xx2-=speed;
+}
+if(GetAsyncKeyState(VK_DOWN)){
+   yy+=speed;
+   yy2+=speed;
+}
+if(GetAsyncKeyState(VK_RIGHT)){
+   xx+=speed;
+   xx2+=speed;
+}
+
+if (xx < 0) { xx = 0; xx2 = 50; }
+ if (xx2 > 1000) { xx =1000 - 50; xx2 =1000; }
+ if (yy < 0) { yy = 0; yy2 = 30; }
+ if (yy2 >450) { yy = 450 - 30; yy2 = 450; }
 
 }
 void bombb(Bomb &b,int ran){
@@ -312,12 +355,45 @@ bool isgameover(int ran){
       } i++;
   }
   return false;}
-void pauses(){
+bool isgameover2(int ran){
+   int i=0,j=0;
+   int bombradius=15;
+   while(i < ran) {
+      if (bombs[i].active) {
+          int distances[] = {
+              distancebetween(xx, yy + 15, bombs[i]),
+              distancebetween(xx - 20, yy + 40, bombs[i]),
+              distancebetween(xx + 30, yy, bombs[i]),
+              distancebetween(xx, yy - 50, bombs[i]),
+              distancebetween(xx2, yy, bombs[i]),
+              distancebetween(xx2 - 20, yy2, bombs[i]), 
+              distancebetween(xx, yy, bombs[i]),
+              distancebetween(xx, yy2 + 50, bombs[i]),
+              distancebetween(xx - 20,yy - 10, bombs[i]),
+              distancebetween(xx - 20, yy + 40, bombs[i]),
+              distancebetween(xx2 + 7, yy2 - 11, bombs[i]),
+              distancebetween(xx + 25, yy-20, bombs[i]),
+              distancebetween(xx + 30, yy2, bombs[i]),
+              distancebetween(xx + 25, yy2+20, bombs[i])         
+            };
+             j=0;
+          while(j<14) {
+              if (distances[j] <= bombradius-5) {
+                  return true;
+              }
+              j++;
+          }
+        
+      } i++;
+  }
+  return false;}
+  void pauses(){
    setcolor(WHITE);
 settextstyle(SANS_SERIF_FONT,0,60);
 outtextxy(580, 350,"PAUSE");
 }
 int c=0;
+bool players=false;
 int main()
 {
 srand(time(0));
@@ -340,19 +416,15 @@ while(men==true){
         break;
      }
     }
-    /*else if(480<=cursorpos.x && cursorpos.x<=800 && 400<=cursorpos.y && cursorpos.y<=480){
-      floodfill(483,405,YELLOW);
-      if(ismouseclick(WM_BUTTONDOWN)){
-        // cleardevice();
-        // while(control){
-            //controls();
-           // if(GetAsyncKeyState(VK_ESCAPE)){
-            //   men=true;
-            //   control=false;
-           // }
-         //}
-      }
-     }*/
+   
+     else if(550<=cursorpos.x && cursorpos.x<=760 && 400<=cursorpos.y && cursorpos.y<=460){
+      floodfill(552,403,YELLOW);
+      if(ismouseclick(WM_LBUTTONDOWN)){
+        players=true;
+        play=true;
+        break;
+     }
+     }
      else if(550<=cursorpos.x && cursorpos.x<=760 && 500<=cursorpos.y && cursorpos.y<=560){
       floodfill(553,505,YELLOW);
       if(ismouseclick(WM_LBUTTONDOWN)){
@@ -366,9 +438,12 @@ while(men==true){
 }
 if(c==0){
 cleardevice();
-c=1;    
-}
+c=1;   
 
+if(players==false){
+xx = 3000, yy = 250, xx2 = 3050, yy2 = 280;
+}
+}
 while(play==true){
    if(GetAsyncKeyState('P')){
       pause=true;
@@ -387,6 +462,8 @@ while(play==true){
    }
    setbkcolor(LIGHTBLUE);
    player();
+   if(players==true){
+   player2();}
    cloud(xc,yc);
    cloud(xc2,yc2);
    cloud(xc3,yc3);
@@ -436,7 +513,7 @@ if(GetAsyncKeyState(VK_RETURN)){
    break;      
   }
   
-  if(isgameover(ran)==TRUE){
+   if(isgameover(ran)==TRUE || isgameover2(ran)==TRUE){
    cleardevice();
    int y=0;
    while(TRUE){
@@ -446,12 +523,18 @@ if(GetAsyncKeyState(VK_RETURN)){
       settextstyle(SANS_SERIF_FONT, 0,40);
       outtextxy(460, 300,"GAME  OVER");
       outtextxy(550,350, text);
+      if(players==true){
+      if(isgameover(ran)==true){
+      outtextxy(420,400,"player blue win");}
+      else{
+      outtextxy(420,400,"player yellow win");}}
       setcolor(YELLOW);
       settextstyle(SANS_SERIF_FONT, 0,80);
       outtextxy(20, 50,"RESTART (press R)");
       rectangle(20,50,198,75);
       if(GetAsyncKeyState('R')){
      x = 50; y = 430; x2 = 100; y2 = 460;
+     xx = 30, yy = 250, xx2 = 80, yy2 = 280;
      i=0;
      while(i<ran){
      bombs[i].active = false;
@@ -467,7 +550,6 @@ if(GetAsyncKeyState(VK_RETURN)){
   delay(20);
   cleardevice();
 }
-
 getch();
 closegraph();
 return 0;

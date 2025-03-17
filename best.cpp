@@ -107,7 +107,7 @@ void menu(int i){
   rectangle(400,200,900,600);
   ellipse(650,55,0,360,400,50);
   settextstyle(GOTHIC_FONT,0,60);
-  outtextxy(315,34,"WELCOME TO KYNM 1.0");
+  outtextxy(315,34,"WELCOME TO KYNM 1.1");
   setfillstyle(SOLID_FILL,YELLOW);
   stars(50,100,20,i);
   floodfill(50,100,YELLOW);
@@ -356,15 +356,17 @@ while(men==true){
      else if(550<=cursorpos.x && cursorpos.x<=760 && 500<=cursorpos.y && cursorpos.y<=560){
       floodfill(553,505,YELLOW);
       if(ismouseclick(WM_LBUTTONDOWN)){
-         break;
+         closegraph();
+        
       }
      }
+     swapbuffers();
  delay(100);
    
 }
 if(c==0){
 cleardevice();
-c=1;
+c=1;    
 }
 
 while(play==true){
@@ -393,7 +395,7 @@ while(play==true){
    cloud(xc6,yc6);
 
    if (spawnbomb) {  
-      ran = (rand() % 15) + 2;
+      ran = (rand() % 13) + 2;
     while(i < ran) {
          bombs[i].x = (rand() % (1500)) + 1400;
          bombs[i].y = (rand() % (450 - 50)) + 25;
@@ -404,6 +406,13 @@ while(play==true){
       spawnbomb =false;
   }     
   terrain();
+  setcolor(YELLOW);
+  setlinestyle(CENTER_LINE,0,1);
+  settextstyle(SANS_SERIF_FONT, 0,80);
+   outtextxy(20, 580,"pause on 'P'");
+   rectangle(18,580,127,605);
+   outtextxy(132, 580,"pause off 'O'");
+   rectangle(130,580,239,605);
   setlinestyle(SOLID_LINE, 0,1);   
   bool allInactive = true;
   while(i < ran) {
@@ -428,17 +437,37 @@ if(GetAsyncKeyState(VK_RETURN)){
   }
   
   if(isgameover(ran)==TRUE){
-   break;}
+   cleardevice();
+   int y=0;
+   while(TRUE){
+      swapbuffers();
+      setcolor(RED);
+      setbkcolor(BLACK);
+      settextstyle(SANS_SERIF_FONT, 0,40);
+      outtextxy(460, 300,"GAME  OVER");
+      outtextxy(550,350, text);
+      setcolor(YELLOW);
+      settextstyle(SANS_SERIF_FONT, 0,80);
+      outtextxy(20, 50,"RESTART (press R)");
+      rectangle(20,50,198,75);
+      if(GetAsyncKeyState('R')){
+     x = 50; y = 430; x2 = 100; y2 = 460;
+     i=0;
+     while(i<ran){
+     bombs[i].active = false;
+   i++;}
+     score=0;
+      cleardevice();
+      break;
+      }
+      delay(100);
+   }
+}
+ swapbuffers();
   delay(20);
   cleardevice();
 }
-cleardevice();
-setbkcolor(BLACK);
-settextstyle(SANS_SERIF_FONT, 0,40);
-outtextxy(460, 300,"GAME  OVER");
-setcolor(RED);
-outtextxy(550,350, text);
-delay(10000);
+
 getch();
 closegraph();
 return 0;
