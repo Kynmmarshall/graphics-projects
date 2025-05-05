@@ -5,11 +5,6 @@
 #include<random>       // For random number generation
 #include<ctime>        // For seeding the random generator
 #include <cstdlib>     // Standard library
-#include<fstream>      //file handling library
-#include<cstring>      //string library for c language
-
-
-using namespace std;  //uses the namespace of the standard library
 
 //bomb class that is used by each bomb that spawns
 class Bomb {
@@ -24,10 +19,6 @@ int score=0;             //player's Score
 int arrax[25],array[25]; //first terrain points 
 int arrx[25],arry[25];   //second terrain poins
 char text[20];           //for displaying score
-string highscores;      //for displaying highscore
-char highscoree[20];
-char highscor[20];
-int highscore=0;
 Bomb bombs[17];          //array of bombs
 bool players=false;      //1 player(false) and 2 players(true)
 int width=GetSystemMetrics(SM_CXSCREEN); //measures the width of the screen
@@ -47,7 +38,6 @@ int yc5=20+(rand()%3)*50;
 int xc6=700;
 int yc6=20+(rand()%3)*50;
 float t=0;
-
 
 //Pure virtual Base class representing location and type of player(used for polymorphism).
 class location{   
@@ -271,9 +261,6 @@ class playerr: public location{  //playerr class inherits the location class tha
          if (b.x < 0) {
              b.active = false;
              score++;
-             if(highscore<=score){
-                highscore=score; 
-             }
          }
      
      }  
@@ -323,30 +310,6 @@ class playerr: public location{  //playerr class inherits the location class tha
 playerr player1(30,300,80,330,true);
 playerr player2(30,210,80,240,false);
 
-//create a class file the store the highscore
-class file{
-    public:
-      void create(){    //function to create the file 
-          ofstream outFile("highscore.txt");
-          if (outFile.is_open()) {
-          outFile << "Highscore: "<<highscore<< endl;
-          outFile.close();
-          }
-      
-      }
-      void read(){     //function to read content of the file 
-          ifstream inFile("highscore.txt");
-          string line;
-          if (inFile.is_open()) {
-          while (getline(inFile, line)) {
-          highscores=line;
-          }
-          inFile.close();
-          }
-      }
-  };
-
-file f1; //creates an object of the class file
 //Draws the game menu
 class menus{
     public:
@@ -389,8 +352,6 @@ class menus{
    
         //draws actual menu 
     void menu(int i){
-        f1.create();   
-        f1.read();
         setcolor(YELLOW);
         rectangle(400,200,900,600);
         ellipse(650,55,0,360,400,50);
@@ -415,13 +376,10 @@ class menus{
         floodfill(318,130,YELLOW);
         setfillstyle(HATCH_FILL,LIGHTMAGENTA);
         floodfill(318,40,YELLOW);
-        rectangle(450,220,800,280);
         rectangle(550,300,750,360);
         rectangle(550,400,760,460);
         rectangle(550,500,760,560);
         settextstyle(SMALL_FONT,0,10);
-        memcpy(highscoree,highscores.c_str(),20);
-        outtextxy(460,230,highscoree);
         outtextxy(560,310,"1 player");
         outtextxy(551,410,"2 players");
         outtextxy(600,510,"EXIT");
@@ -433,7 +391,7 @@ class menus{
 int c=0;
 int main()
 {
-menus menu1;
+ menus menu1;
 srand(time(0));
 int i=0,j=0;
 POINT cursorpos;
@@ -491,7 +449,7 @@ while(play==true){
     if(GetAsyncKeyState(VK_ESCAPE)){  //if Esc is pressed stop all
         return 0;
      }
-     outtextxy(460,230,highscoree);
+  
    setbkcolor(LIGHTBLUE);
    player1.player();
 

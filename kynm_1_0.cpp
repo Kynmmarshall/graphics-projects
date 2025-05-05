@@ -60,6 +60,7 @@ void cloud(int &xc, int &yc){
    xc-=2;
   }
 }
+float t=0;
 void stars(int centerX, int centerY, int size,int angle){
       float rad=(float)angle*(M_PI / 180);
       int arra[8],arrar[8];
@@ -147,95 +148,94 @@ int distancebetween(int x,int y,Bomb &b){
 
    return(sqrt(pow(bombx-playerx,2)+pow(bomby-playery,2)));
 }
+void player(){
+   int speed=15;  
+setcolor(YELLOW);
+     circle(x2+2,y+7,3);
+     circle(x2+2,y+21,3);
+     line(x, y+15, x-20, y+40);  
+     line(x + 30, y, x, y - 50);   
+     line(x, y - 50, x2, y);           
+     line(x2 - 20, y2, x, y2 + 50); 
+     line(x, y2 + 50, x2, y2);
+     line(x, y, x-20, y-10);           
+     line(x, y+15, x -20, y - 10); 
+     line(x, y2, x - 20, y + 40); 
+     arc(x2, y2 - 15, 270, 90, 15);
+     line(x, y, x+30, y);
+     line(x, y2, x+30, y2);
+setfillstyle(1,YELLOW);
+floodfill((x+x2)/2,(y+y2)/2,YELLOW);
+if(GetAsyncKeyState('W')){
+   y-=speed;
+   y2-=speed;
+}
+if(GetAsyncKeyState('A')){
+   x-=speed;
+   x2-=speed;
+}
+if(GetAsyncKeyState('S')){
+   y+=speed;
+   y2+=speed;
+}
+if(GetAsyncKeyState('D')){
+   x+=speed;
+   x2+=speed;
+}
+
+if (x < 0) { x = 0; x2 = 50; }
+ if (x2 > 1000) { x =1000 - 50; x2 =1000; }
+ if (y < 0) { y = 0; y2 = 30; }
+ if (y2 >450) { y = 450 - 30; y2 = 450; }
+
+}
+void player2(){
+
+int speed=15;  
+setcolor(BLUE);
+  circle(xx2+2,yy+7,3);
+  circle(xx2+2,yy+21,3);
+  line(xx, yy+15, xx-20, yy+40);  
+  line(xx + 30, yy, xx, yy - 50);   
+  line(xx, yy - 50, xx2, yy);           
+  line(xx2 - 20, yy2, xx, yy2 + 50); 
+  line(xx, yy2 + 50, xx2, yy2);
+  line(xx, yy, xx-20, yy-10);           
+  line(xx, yy+15, xx -20, yy - 10); 
+  line(xx, yy2, xx - 20, yy + 40); 
+  arc(xx2, yy2 - 15, 270, 90, 15);
+  line(xx, yy, xx+30, yy);
+  line(xx, yy2, xx+30, yy2);
+setfillstyle(1,BLUE);
+floodfill((xx+xx2)/2,(yy+yy2)/2,BLUE);
+if(GetAsyncKeyState(VK_UP)){
+yy-=speed;
+yy2-=speed;
+}
+if(GetAsyncKeyState(VK_LEFT)){
+xx-=speed;
+xx2-=speed;
+}
+if(GetAsyncKeyState(VK_DOWN)){
+yy+=speed;
+yy2+=speed;
+}
+if(GetAsyncKeyState(VK_RIGHT)){
+xx+=speed;
+xx2+=speed;
+}
+
+if (xx < 0) { xx = 0; xx2 = 50; }
+if (xx2 > 1000) { xx =1000 - 50; xx2 =1000; }
+if (yy < 0) { yy = 0; yy2 = 30; }
+if (yy2 >450) { yy = 450 - 30; yy2 = 450; }
+
+}
 void triangle(int x1,int y1,int x2,int y2,int x3,int y3){
    moveto(x1,y1);
    lineto(x2,y2);
    lineto(x3,y3);
    line(x1,y1,x3,y3);
-}
-void player(){
-   
-      int speed=15;  
-   setcolor(YELLOW);
-        circle(x2+2,y+7,3);
-        circle(x2+2,y+21,3);
-        line(x, y+15, x-20, y+40);  
-        line(x + 30, y, x, y - 50);   
-        line(x, y - 50, x2, y);           
-        line(x2 - 20, y2, x, y2 + 50); 
-        line(x, y2 + 50, x2, y2);
-        line(x, y, x-20, y-10);           
-        line(x, y+15, x -20, y - 10); 
-        line(x, y2, x - 20, y + 40); 
-        arc(x2, y2 - 15, 270, 90, 15);
-        line(x, y, x+30, y);
-        line(x, y2, x+30, y2);
-   setfillstyle(1,YELLOW);
-   floodfill((x+x2)/2,(y+y2)/2,YELLOW);
-   if(GetAsyncKeyState('W')){
-      y-=speed;
-      y2-=speed;
-   }
-   if(GetAsyncKeyState('A')){
-      x-=speed;
-      x2-=speed;
-   }
-   if(GetAsyncKeyState('S')){
-      y+=speed;
-      y2+=speed;
-   }
-   if(GetAsyncKeyState('D')){
-      x+=speed;
-      x2+=speed;
-   }
-
-   if (x < 0) { x = 0; x2 = 50; }
-    if (x2 > 1000) { x =1000 - 50; x2 =1000; }
-    if (y < 0) { y = 0; y2 = 30; }
-    if (y2 >450) { y = 450 - 30; y2 = 450; }
-
-}
-void player2(){
-   
-   int speed=15;  
-setcolor(BLUE);
-     circle(xx2+2,yy+7,3);
-     circle(xx2+2,yy+21,3);
-     line(xx, yy+15, xx-20, yy+40);  
-     line(xx + 30, yy, xx, yy - 50);   
-     line(xx, yy - 50, xx2, yy);           
-     line(xx2 - 20, yy2, xx, yy2 + 50); 
-     line(xx, yy2 + 50, xx2, yy2);
-     line(xx, yy, xx-20, yy-10);           
-     line(xx, yy+15, xx -20, yy - 10); 
-     line(xx, yy2, xx - 20, yy + 40); 
-     arc(xx2, yy2 - 15, 270, 90, 15);
-     line(xx, yy, xx+30, yy);
-     line(xx, yy2, xx+30, yy2);
-setfillstyle(1,BLUE);
-floodfill((xx+xx2)/2,(yy+yy2)/2,BLUE);
-if(GetAsyncKeyState(VK_UP)){
-   yy-=speed;
-   yy2-=speed;
-}
-if(GetAsyncKeyState(VK_LEFT)){
-   xx-=speed;
-   xx2-=speed;
-}
-if(GetAsyncKeyState(VK_DOWN)){
-   yy+=speed;
-   yy2+=speed;
-}
-if(GetAsyncKeyState(VK_RIGHT)){
-   xx+=speed;
-   xx2+=speed;
-}
-
-if (xx < 0) { xx = 0; xx2 = 50; }
- if (xx2 > 1000) { xx =1000 - 50; xx2 =1000; }
- if (yy < 0) { yy = 0; yy2 = 30; }
- if (yy2 >450) { yy = 450 - 30; yy2 = 450; }
-
 }
 void bombb(Bomb &b,int ran){
    setcolor(RED);
@@ -252,7 +252,8 @@ void bombb(Bomb &b,int ran){
       setfillstyle(SOLID_FILL, BLACK);
     floodfill(px, py, RED);
    }
-    b.x -= 10;
+   t+=.0009 ;
+    b.x -= 10+t;
     if (b.x < 0) {
         b.active = false;
         score++;
@@ -387,13 +388,15 @@ bool isgameover2(int ran){
       } i++;
   }
   return false;}
-  void pauses(){
+void pauses(){
    setcolor(WHITE);
 settextstyle(SANS_SERIF_FONT,0,60);
 outtextxy(580, 350,"PAUSE");
 }
 int c=0;
 bool players=false;
+int width=GetSystemMetrics(SM_CYSCREEN);
+int height=GetSystemMetrics(SM_CYSCREEN);
 int main()
 {
 srand(time(0));
@@ -534,7 +537,9 @@ if(GetAsyncKeyState(VK_RETURN)){
       rectangle(20,50,198,75);
       if(GetAsyncKeyState('R')){
      x = 50; y = 430; x2 = 100; y2 = 460;
-     xx = 30, yy = 250, xx2 = 80, yy2 = 280;
+     if(players==true){
+     xx = 30, yy = 250, xx2 = 80, yy2 = 280;}
+     t=0;
      i=0;
      while(i<ran){
      bombs[i].active = false;

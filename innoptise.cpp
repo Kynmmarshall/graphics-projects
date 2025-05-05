@@ -5,10 +5,9 @@ using namespace std;
 int main()
 {
     int i=0;
-int gd=DETECT,gm;
-initgraph(&gd,&gm,"");
+initwindow(1300,700,"");
 while(i<100000){
-circle(300,250,i);
+circle(680,350,i);
 delay(5);
 i+=7;
 }
