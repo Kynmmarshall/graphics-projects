@@ -5,6 +5,12 @@
 #include<random>       // For random number generation
 #include<ctime>        // For seeding the random generator
 #include <cstdlib>     // Standard library
+#include<fstream>      //file handling library
+#include<cstring>      //string library for c language
+#include <mmsystem.h>  //library for multimedia sound playing
+#pragma comment(lib, "winmm.lib") //adds the linker winmm.lib for sound playing
+
+using namespace std;  //uses the namespace of the standard library
 
 //bomb class that is used by each bomb that spawns
 class Bomb {
@@ -39,6 +45,7 @@ int xc6=700;
 int yc6=20+(rand()%3)*50;
 float t=0;
 
+
 //Pure virtual Base class representing location and type of player(used for polymorphism).
 class location{   
     public:
@@ -52,7 +59,8 @@ class location{
             this->y2=y2;
             this->type=type;
         }
-    
+        virtual ~location() {// virtual distructor for virtual class incase a I want to use a pointer in it
+        }
         virtual void draw() = 0;  //abstract draw function for polymorphism
     };
 
@@ -63,7 +71,8 @@ class playerr: public location{  //playerr class inherits the location class tha
       :location(x,y,x2,y2,type){}
     
     void draw() override{}
-    
+    ~playerr() {  //destructor for player class to clean up dynamically allocated animations
+    }
     // Draws the plane and handles movement
     void player(){
         int speed=15;
@@ -310,7 +319,34 @@ class playerr: public location{  //playerr class inherits the location class tha
 playerr player1(30,300,80,330,true);
 playerr player2(30,210,80,240,false);
 
+//Class to read and write the high score to a file named "highscore.txt"
+class highscore{     
+    public:
+    int readHighScore() {
+        std::ifstream file("highscore.txt");
+        int highScore = 0;
+        if (file.is_open()) {
+            file >> highScore; //stores content of the file in the variable highScore
+            file.close();
+        }
+        return highScore;
+    }
+    ~highscore() {  //destructor for highscore class to Prepares the class for better resource management
+    }
+    void writeHighScore(int score) {
+        std::ofstream file("highscore.txt");
+        if (file.is_open()) {
+            file << score;
+            file.close();
+        }
+    }
+    
+};
+highscore h1;   //Object of class highscore
+int highScore = h1.readHighScore();  //Initialize the highscore to the score inside the file "highscore.txt" if any
+char hs[50];
 //Draws the game menu
+
 class menus{
     public:
     //method for rotating star
@@ -356,7 +392,7 @@ class menus{
         rectangle(400,200,900,600);
         ellipse(650,55,0,360,400,50);
         settextstyle(GOTHIC_FONT,0,60);
-        outtextxy(315,34,"WELCOME TO KYNM 1.1");
+        outtextxy(315,34,"WELCOME TO KYNM 1.3");
         setfillstyle(SOLID_FILL,YELLOW);
         stars(50,100,20,i);
         floodfill(50,100,YELLOW);
@@ -376,29 +412,44 @@ class menus{
         floodfill(318,130,YELLOW);
         setfillstyle(HATCH_FILL,LIGHTMAGENTA);
         floodfill(318,40,YELLOW);
-        rectangle(550,300,750,360);
-        rectangle(550,400,760,460);
-        rectangle(550,500,760,560);
+        rectangle(440,220,820,280);  //highscore box
+        rectangle(840,220,900,280);  //reset box
+        setlinestyle(0,0,4);
+        arc(870,250,270,150,10);
+        line(865,246,857,244);
+        line(857,244,859,253);
+        line(865,246,859,253);
+        setlinestyle(0,0,1);
+        rectangle(550,300,750,360);  //1 player box
+        rectangle(550,400,760,460);  //2 player box
+        rectangle(550,500,760,560);  //Exit box
         settextstyle(SMALL_FONT,0,10);
         outtextxy(560,310,"1 player");
         outtextxy(551,410,"2 players");
         outtextxy(600,510,"EXIT");
         floodfill(430,210,YELLOW);
         setfillstyle(SOLID_FILL,BLUE);
+        setcolor(GREEN);
+        sprintf(hs, "High Score: %d", highScore);
+        outtextxy(442, 230, hs);
       }
 };
 
 int c=0;
+
 int main()
 {
- menus menu1;
-srand(time(0));
+
+menus menu1;
+srand(time(0));   //uses the PCs time to generate random numbers
 int i=0,j=0;
 POINT cursorpos;
 bool play=false,men=true;
 initwindow(width,height,"");
   bool spawnbomb=true;
 int random_number=1000,ran=15;
+
+PlaySound("menu.wav", NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 
 // when men=true shows the menu screen with all it details
 while(men==true){
@@ -409,7 +460,7 @@ while(men==true){
 
     //when mouse hover over the respective option it changes their color to red
     setfillstyle(SOLID_FILL,RED);
-    if(550<=cursorpos.x && cursorpos.x<=750 && 328<=cursorpos.y && cursorpos.y<=388){
+    if(550<=cursorpos.x && cursorpos.x<=750 && 300<=cursorpos.y && cursorpos.y<=360){
      floodfill(553,305,YELLOW);
      
      //when mouse button is clicked on particular places on screen program perform respective tasks
@@ -425,6 +476,7 @@ while(men==true){
         players=true;
         play=true;
         break;
+        
      }
      }
      else if(550<=cursorpos.x && cursorpos.x<=760 && 500<=cursorpos.y && cursorpos.y<=560){
@@ -433,6 +485,14 @@ while(men==true){
          return 0;
       }
      }
+     else if(840<=cursorpos.x && cursorpos.x<=900 && 220<=cursorpos.y && cursorpos.y<=280){
+        setfillstyle(1,GREEN);
+        floodfill(842,223,YELLOW);
+        if(ismouseclick(WM_LBUTTONDOWN)){
+            h1.writeHighScore(0);
+            highScore=h1.readHighScore();
+         }
+       }
      swapbuffers();
  delay(100);
    
@@ -445,11 +505,11 @@ if(players==false){
 player2.x= 3000,player2.y = 250, player2.x2 = 3050, player2.y2 = 280;
 }
 }
+PlaySound("play.wav", NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);  //plays sound when the game starts
 while(play==true){
     if(GetAsyncKeyState(VK_ESCAPE)){  //if Esc is pressed stop all
         return 0;
      }
-  
    setbkcolor(LIGHTBLUE);
    player1.player();
 
@@ -521,25 +581,36 @@ if (allInactive){
 }
         
    sprintf(text, "score: %d",score); //store the score in text
-   settextstyle(SMALL_FONT,0,10);
+   settextstyle(DEFAULT_FONT,0,3);
    setcolor(RED);
    outtextxy(20,20, text);        //prints the score on the top left of the screen
+   settextstyle(DEFAULT_FONT,0,3);
+   setcolor(YELLOW);
+   sprintf(hs, "High Score: %d", highScore);
+   outtextxy(460, 600, hs);     
+        
+
 if(GetAsyncKeyState(VK_RETURN)){
    break;      
   }
   
-
+  if (score > highScore) {
+    h1.writeHighScore(score);
+    highScore = score; // Update value of highscore if user beats it
+}
   //checks if player(s) is touching bomb then displays gameover screen
    if(player1.isgameover(ran)==TRUE || player2.isgameover(ran)==TRUE){
    cleardevice();
    int y=0;
+   PlaySound(NULL, NULL, 0);
+   PlaySound("Gameover.wav", NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
    while(TRUE){
       swapbuffers();  //prevents screen flashing 
       setcolor(RED);
       setbkcolor(BLACK);
-      settextstyle(SANS_SERIF_FONT, 0,40);
-      outtextxy(460, 300,"GAME  OVER");
-      outtextxy(550,350, text);
+      settextstyle(DEFAULT_FONT, 0,40);
+      outtextxy(460, 300,"GAME OVER");
+      outtextxy(460,350, text);
       if(GetAsyncKeyState(VK_ESCAPE)){
         return 0;
      }
@@ -555,6 +626,7 @@ if(GetAsyncKeyState(VK_RETURN)){
 
       //IF R is pressed put the values of all variables to default
       if(GetAsyncKeyState('R')){
+        PlaySound("play.wav", NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);  //plays sound when the game starts
      player1.x = 50; player1.y = 430; player1.x2 = 100; player1.y2 = 460;
      if(players==true){
      player2.x = 30, player2.y = 250, player2.x2 = 80, player2.y2 = 280;}
