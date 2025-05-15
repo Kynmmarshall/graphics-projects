@@ -432,6 +432,7 @@ class menus{
         setcolor(GREEN);
         sprintf(hs, "High Score: %d", highScore);
         outtextxy(442, 230, hs);
+        outtextxy(160,650,"CONTROLS: [W A S D] and [ARROW KEYS]");
       }
 };
 
