@@ -143,9 +143,9 @@ class playerr: public location{  //playerr class inherits the location class tha
      
      
      if (x < 0) { x = 0; x2 = 50; }
-      if (x2 > 1000) { x =1000 - 50; x2 =1000; }
+      if (x2 > width-200) { x =width-200 - 50; x2 =width-200; }
       if (y < 0) { y = 0; y2 = 30; }
-      if (y2 >450) { y = 450 - 30; y2 = 450; }
+      if (y2 >height-280) { y = height-280 - 30; y2 = height-280; }
      
      }
     
@@ -192,19 +192,19 @@ class playerr: public location{  //playerr class inherits the location class tha
         if (!initialized) {
             while(i < 24) {
                 arrax[i] = (i * 50);  
-                array[i] = (rand() % 100) + 600;
-                arrx[i] = (i * 50)+1300;  
-                arry[i] = (rand() % 100) + 600;
+                array[i] = (rand() % 100) + height-100;
+                arrx[i] = (i * 50)+width+100;  
+                arry[i] = (rand() % 100) + height-100;
                 i++;
             }
-                arrax[24]=1300;
-                array[24]=630;
+                arrax[24]=width+100;
+                array[24]=height-100;
                 arrax[0]=0;
-                array[0]=630;
-                arrx[24]=2600;
-                arry[24]=630;
-                arrx[0]=1300;
-                arry[0]=630;
+                array[0]=height-100;
+                arrx[24]=width+100+width+100;
+                arry[24]=height-100;
+                arrx[0]=width+100;
+                arry[0]=height-100;
             initialized = true;
         }
         
@@ -218,25 +218,25 @@ class playerr: public location{  //playerr class inherits the location class tha
         if(arrax[24]<=0){
            i=1;   
            while(i < 24) {
-              arrax[i] = (i * 50)+1300; 
-              array[i] = (rand() % 100) + 600; 
+              arrax[i] = (i * 50)+width+100; 
+              array[i] = (rand() % 100) + height-130; 
               i++;}
-              arrax[0]=1300;
-              array[0]=630;
-              arrax[24]=2600;
-              array[24]=630;
+              arrax[0]=width+100;
+              array[0]=height-100;
+              arrax[24]=width+100+width+100;
+              array[24]=height-100;
           }
           if(arrx[24]<=0){
            i=1;
            while(i < 24) {
-              arrx[i] = (i * 50)+1300; 
-              arry[i] = (rand() % 100) + 600; 
+              arrx[i] = (i * 50)+width+100; 
+              arry[i] = (rand() % 100) + height-130; 
               i++;
           }
-              arrx[0]=1300;
-              arry[0]=630;
-              arrx[24]=2600;
-              arry[24]=630;
+              arrx[0]=width+100;
+              arry[0]=height-100;
+              arrx[24]=width+100+width+100;
+              arry[24]=height-100;
           }
           
         i=0;
@@ -287,7 +287,7 @@ class playerr: public location{  //playerr class inherits the location class tha
             i++;
         }
        if(xc<=-90){
-        xc=1300;
+        xc=width+10;
         yc=(rand()%3)*50;
        }
        else{
@@ -389,10 +389,10 @@ class menus{
         //draws actual menu 
     void menu(int i){
         setcolor(YELLOW);
-        rectangle(400,200,900,600);
-        ellipse(650,55,0,360,400,50);
+        rectangle((width/2)-250,(height/2)-180,(width/2)+270,(height/2)+220);
+        ellipse((width/2),55,0,360,400,50);
         settextstyle(GOTHIC_FONT,0,60);
-        outtextxy(315,34,"WELCOME TO KYNM 1.3");
+        outtextxy((width/2)-300,34,"WELCOME TO KYNM 1.3");
         setfillstyle(SOLID_FILL,YELLOW);
         stars(50,100,20,i);
         floodfill(50,100,YELLOW);
@@ -401,46 +401,47 @@ class menus{
         stars(150,100,20,i);
         floodfill(150,100,YELLOW);
       
-        stars(1100,100,20,i);
-        floodfill(1100,100,YELLOW);
-        stars(1150,50,30,i);
-        floodfill(1150,50,YELLOW);
-        stars(1200,100,20,i);
-        floodfill(1200,100,YELLOW);
+        stars(width-187,100,20,i);
+        floodfill(width-187,100,YELLOW);
+        stars(width-137,50,30,i);
+        floodfill(width-137,50,YELLOW);
+        stars(width-87,100,20,i);
+        floodfill(width-87,100,YELLOW);
       
         setfillstyle(XHATCH_FILL,CYAN);
         floodfill(318,130,YELLOW);
         setfillstyle(HATCH_FILL,LIGHTMAGENTA);
         floodfill(318,40,YELLOW);
-        rectangle(440,220,820,280);  //highscore box
-        rectangle(840,220,900,280);  //reset box
+        rectangle((width/2)-210,(height/2)-150,(width/2)+170,(height/2)-90);  //highscore box
+        rectangle((width/2)+190,(height/2)-150,(width/2)+250,(height/2)-90);  //reset box
         setlinestyle(0,0,4);
-        arc(870,250,270,150,10);
-        line(865,246,857,244);
-        line(857,244,859,253);
-        line(865,246,859,253);
+        arc((width/2)+220,(height/2)-120,270,150,10);
+        line((width/2)+215,(height/2)-124,(width/2)+207,(height/2)-122);
+        line((width/2)+207,(height/2)-122,(width/2)+209,(height/2)-117);
+        line((width/2)+215,(height/2)-124,(width/2)+209,(height/2)-117);
         setlinestyle(0,0,1);
-        rectangle(550,300,750,360);  //1 player box
-        rectangle(550,400,760,460);  //2 player box
-        rectangle(550,500,760,560);  //Exit box
+        rectangle((width/2)-100,(height/2)-70,(width/2)+100,(height/2)-10);  //1 player box
+        rectangle((width/2)-100,(height/2)+30,(width/2)+110,(height/2)+90);  //2 player box
+        rectangle((width/2)-100,(height/2)+130,(width/2)+110,(height/2)+190);  //Exit box
         settextstyle(SMALL_FONT,0,10);
-        outtextxy(560,310,"1 player");
-        outtextxy(551,410,"2 players");
-        outtextxy(600,510,"EXIT");
-        floodfill(430,210,YELLOW);
+        outtextxy((width/2)-90,(height/2)-60,"1 player");
+        outtextxy((width/2)-99,(height/2)+40,"2 players");
+        outtextxy((width/2)-50,(height/2)+140,"EXIT");
+        floodfill((width/2)+20,(height/2)-160,YELLOW);
         setfillstyle(SOLID_FILL,BLUE);
         setcolor(GREEN);
         sprintf(hs, "High Score: %d", highScore);
-        outtextxy(442, 230, hs);
-        outtextxy(160,650,"CONTROLS: [W A S D] and [ARROW KEYS]");
+        outtextxy((width/2)-200, (height/2)-140, hs);
+        outtextxy((width/2)-480,(height/2)+280,"CONTROLS: [W A S D] and [ARROW KEYS]");
       }
 };
 
 int c=0;
-
+bool res=true;
 int main()
 {
-
+while(res==true){
+    res=false;
 menus menu1;
 srand(time(0));   //uses the PCs time to generate random numbers
 int i=0,j=0;
@@ -461,27 +462,29 @@ while(men==true){
 
     //when mouse hover over the respective option it changes their color to red
     setfillstyle(SOLID_FILL,RED);
-    if(550<=cursorpos.x && cursorpos.x<=750 && 300<=cursorpos.y && cursorpos.y<=360){
-     floodfill(553,305,YELLOW);
+    if((width/2)-100<=cursorpos.x && cursorpos.x<=(width/2)+100 && (height/2)-70<=cursorpos.y && cursorpos.y<=(height/2)-10){
+     floodfill((width/2)-97,(height/2)-65,YELLOW);
      
      //when mouse button is clicked on particular places on screen program perform respective tasks
      if(ismouseclick(WM_LBUTTONDOWN)){
         play=true;
+        player2.x= 3000,player2.y = 250, player2.x2 = 3050, player2.y2 = 280;
         break;
      }
     }
    
-     else if(550<=cursorpos.x && cursorpos.x<=760 && 400<=cursorpos.y && cursorpos.y<=460){
-      floodfill(552,403,YELLOW);
+     else if((width/2)-100<=cursorpos.x && cursorpos.x<=(width/2)+110 && (height/2)+30<=cursorpos.y && cursorpos.y<=(height/2)+90){
+      floodfill((width/2)-98,(height/2)+33,YELLOW);
       if(ismouseclick(WM_LBUTTONDOWN)){
         players=true;
+        player2.x = 30, player2.y = 250, player2.x2 = 80, player2.y2 = 280;
         play=true;
         break;
         
      }
      }
-     else if(550<=cursorpos.x && cursorpos.x<=760 && 500<=cursorpos.y && cursorpos.y<=560){
-      floodfill(553,505,YELLOW);
+     else if((width/2)-100<=cursorpos.x && cursorpos.x<=(width/2)+120 && (height/2)+130<=cursorpos.y && cursorpos.y<=(height/2)+190){
+      floodfill((width/2)-97,(height/2)+135,YELLOW);
       if(ismouseclick(WM_LBUTTONDOWN)){
          return 0;
       }
@@ -510,6 +513,17 @@ PlaySound("play.wav", NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);  //plays sound
 while(play==true){
     if(GetAsyncKeyState(VK_ESCAPE)){  //if Esc is pressed stop all
         return 0;
+     }
+     if(GetAsyncKeyState('M')){
+        men=true;
+        res=true;
+        if(players==true){
+     player2.x = 30, player2.y = 250, player2.x2 = 80, player2.y2 = 280;}
+        players=false;
+        play=false;
+        score=0;
+        player1.x = 50; player1.y = 430; player1.x2 = 100; player1.y2 = 460;
+        break;
      }
    setbkcolor(LIGHTBLUE);
    player1.player();
@@ -550,6 +564,8 @@ while(play==true){
    rectangle(18,580,127,605);
    outtextxy(width-137, 580,"Exit on 'Esc'");
    rectangle(width-139,580,width-30,605);
+   outtextxy(width-137, 635,"MainMenu 'M'");
+   rectangle(width-139,635,width-15,660);
    outtextxy(132, 580,"pause off 'O'");
    rectangle(130,580,239,605);
   setlinestyle(SOLID_LINE, 0,1);   
@@ -563,12 +579,16 @@ while(play==true){
 //pauses game
 if(GetAsyncKeyState('P')){
     player1.pauses();
+    swapbuffers();
      int m=0;
 while(true){    
 if(m<1){
   m++;
  }
    if(GetAsyncKeyState('O')){
+    break;
+ }
+  if(GetAsyncKeyState(VK_ESCAPE)){
     break;
  }
  delay(100);
@@ -601,30 +621,41 @@ if(GetAsyncKeyState(VK_RETURN)){
 }
   //checks if player(s) is touching bomb then displays gameover screen
    if(player1.isgameover(ran)==TRUE || player2.isgameover(ran)==TRUE){
+   
    cleardevice();
-   int y=0;
-   PlaySound(NULL, NULL, 0);
-   PlaySound("Gameover.wav", NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
-   while(TRUE){
-      swapbuffers();  //prevents screen flashing 
-      setcolor(RED);
+   setbkcolor(BLACK);
+   setfillstyle(11,CYAN);
+   floodfill(100,100,RED);
+   rectangle((width/2)-300,(height/2)-100,(width/2)+420,(height/2)+200);
+   setfillstyle(6,GREEN);
+   floodfill(width/2,height/2,YELLOW);
+   setcolor(RED);
       setbkcolor(BLACK);
       settextstyle(DEFAULT_FONT, 0,40);
       outtextxy(460, 300,"GAME OVER");
       outtextxy(460,350, text);
-      if(GetAsyncKeyState(VK_ESCAPE)){
-        return 0;
-     }
       if(players==true){
       if(player1.isgameover(ran)==true){
-      outtextxy(420,400,"player blue win");}
+      outtextxy(390,400,"player blue win");}
       else{
-      outtextxy(420,400,"player yellow win");}}
+      outtextxy(390,400,"player yellow win");}}
       setcolor(YELLOW);
       settextstyle(SANS_SERIF_FONT, 0,80);
       outtextxy(20, 50,"RESTART (press R)");
       rectangle(20,50,198,75);
+      outtextxy(width-200, 50,"EXIT (press ESC)");
+      rectangle(width-200,50,width-43,75);
+      outtextxy(width-200, 85,"MainMenu (press 'M')");
+      rectangle(width-200,85,width-10,110);
 
+   swapbuffers();  //prevents screen flashing 
+   int y=0;
+   PlaySound(NULL, NULL, 0);
+   PlaySound("Gameover.wav", NULL, SND_FILENAME | SND_ASYNC | SND_LOOP); //plays sound for gameover
+   while(TRUE){
+      if(GetAsyncKeyState(VK_ESCAPE)){
+        return 0;
+     }
       //IF R is pressed put the values of all variables to default
       if(GetAsyncKeyState('R')){
         PlaySound("play.wav", NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);  //plays sound when the game starts
@@ -640,6 +671,17 @@ if(GetAsyncKeyState(VK_RETURN)){
       cleardevice();
       break;
       }
+      if(GetAsyncKeyState('M')){
+        men=true;
+        res=true;
+        if(players==true){
+     player2.x = 30, player2.y = 250, player2.x2 = 80, player2.y2 = 280;}
+        players=false;
+        play=false;
+        score=0;
+        player1.x = 50; player1.y = 430; player1.x2 = 100; player1.y2 = 460;
+        break;
+     }
       delay(100);
    }
 }
@@ -647,6 +689,8 @@ if(GetAsyncKeyState(VK_RETURN)){
   delay(20); //smoothens the motions on the screen
   cleardevice(); //refreshes the screen display to simulate motion
 }
+}
+
 getch(); 
 closegraph();
 return 0;
