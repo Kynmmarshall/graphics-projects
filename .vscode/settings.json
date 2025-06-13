@@ -4,6 +4,7 @@
         "cmath": "cpp",
         "iostream": "cpp",
         "cstdlib": "cpp",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "ctime": "cpp"
     }
 }
